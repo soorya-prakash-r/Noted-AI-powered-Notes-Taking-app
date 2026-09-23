@@ -65,8 +65,8 @@ Noted/
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/soorya-prakash-r/Noted.git
-   cd Noted
+   git clone https://github.com/soorya-prakash-r/Noted-AI-powered-Notes-Taking-app.git
+   cd Noted-AI-powered-Notes-Taking-app
    ```
 
 2. **Create a virtual environment**
