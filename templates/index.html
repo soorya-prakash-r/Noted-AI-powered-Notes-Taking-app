@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Noted!</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg-color-light: #eaf4fc;
+    --bg-color-dark: #212324;
+    --text-color-light: black;
+    --text-color-dark: #f4f4f9;
+    --primary-color: #292492;
+    --secondary-color: #8ed6f9;
+    --accent-color: #5b77c5;
+}
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color-light);
+    color: var(--text-color-light);
+    transition: all 0.3s ease;
+}
+body.dark {
+    background-color: var(--bg-color-dark);
+    color: var(--text-color-dark);
+}
+.container {
+    max-width: 900px;
+    margin: 60px auto;
+    padding: 10px;
+    border-radius: 15px;
+    background-color: #ecf3f9;
+    height: 400px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    transition: all 0.3s ease;
+}
+body.dark .container {
+    background-color: #2c2c3c;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+h1 {
+    text-align: center;
+    color: var(--primary-color);
+    font-size: 2.5rem;
+    margin-bottom: 25px;
+    letter-spacing: 1px;
+}
+.dark-mode-toggle {
+    float: right;
+    font-weight: 400;
+    cursor: pointer;
+    font-family: "Vast Shadow", serif;
+    padding: 8px 16px;
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+body.dark .dark-mode-toggle {
+  background-color: #a6d6fd;
+  color: black;
+}
+body.dark .dark-mode-toggle:hover {
+  background-color: white;
+  color: black;
+}
+.dark-mode-toggle:hover {
+    background-color: black;
+    color: white;
+}
+#noteTabs {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+    gap: 5px;
+}
+#noteTabs button {
+    padding: 8px 16px;
+    font-family: "Vast Shadow", serif;
+    font-size: 70%;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    background-color: var(--primary-color);
+    color: #fff;
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+#noteTabs button:hover {
+    background-color: var(--secondary-color);
+}
+#noteTabs button.active {
+    background-color: var(--accent-color);
+}
+#noteArea {
+    width: 100%; 
+    height: 150px; 
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    direction: ltr;
+    text-align: left;
+    background-color: #fafafa;
+    transition: all 0.3s ease;
+}
+body.dark #noteArea {
+    background-color: #3a3a4a;
+    border: 1px solid #555;
+    color: var(--text-color-dark);
+}
+#noteArea:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--primary-color, #4f46e5);
+}
+body.dark #noteArea:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px white;
+}
+button.action-btn {
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: "Vast Shadow", serif;
+    font-size: 70%;
+    margin-top: 10px;
+    margin-right: 10px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+body.dark button.action-btn {
+  background-color: #a6d6fd;
+  color: black;
+}
+body.dark button.action-btn:hover {
+  background-color: white;
+  color: black;
+}
+button.action-btn:hover {
+    background-color: black;
+    color: white;
+    transform: translateY(-2px);
+}
+button.action-btn.active {
+    background-color: var(--accent-color) !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+.buttons {
+    margin-top: 15px;
+    text-align: right;
+}
+.buttons.left {
+    text-align: left;
+}
+@media (max-width: 768px) {
+    .container {
+        margin: 30px 20px;
+        padding: 20px;
+    }
+    h1 {
+        font-size: 2rem;
+    }
+    #noteArea {
+        min-height: 300px;
+    }
+}
+.noted-text {
+    font-size: 70px;
+    font-family: 'Barrio', sans-serif;
+    color: var(--primary-color);
+    transition: color 0.3s ease;
+}
+body.dark .noted-text {
+    color:  #a6d6fd;
+}
+.toast {
+    min-width: 200px;
+    margin-top: 10px;
+    padding: 12px 18px;
+    border-radius: 8px;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.5s ease;
+}
+.toast.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+.toast.success { background-color: #4caf50; }
+.toast.error { background-color: #f44336; }
+.toast.info { background-color: #2196f3; }
+.toast.warning { background-color: #ff9800; }
+#noteArea:empty::before {
+    content: attr(placeholder);
+    color: #888;
+    pointer-events: none;
+    display: block;
+}
+</style>  
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barrio&family=Vast+Shadow&display=swap" rel="stylesheet">
+</head>
+<body>
+<div id="toastContainer" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;"></div>
+<div class="container">
+  <div>
+    <button class="dark-mode-toggle" onclick="toggleDarkMode()">Dark / Light</button> 
+  </div>
+    <h1 class="noted-text">Noted!</h1>
+    <div id="noteTabs"></div>
+    <div class="buttons" style="text-align:left; margin-bottom:10px;">
+        <button id="boldBtn" class="action-btn" onclick="toggleFormat('bold')">B</button>
+        <button id="italicBtn" class="action-btn" onclick="toggleFormat('italic')"><i>I</i></button>
+        <button id="underlineBtn" class="action-btn" onclick="toggleFormat('underline')"><u>U</u></button>
+        <button class="action-btn" onclick="saveNote()">💾 Save</button>
+        <button class="action-btn" onclick="clearNote()">🗑 Clear</button>
+        <button class="action-btn" onclick="enhanceNote()">✨ AI Enhance</button>
+        <button class="action-btn" onclick="openNewNote()">🆕 New Note</button>
+        <button class="action-btn" onclick="deleteNote()">❌ Delete Note</button>
+    </div>
+    <div id="noteArea" contenteditable="true" placeholder="Start typing your notes..."></div>
+</div>
+<script>
+let notes = [{ id: 1, content: '', undoStack: [] }];
+let currentNoteId = 1;
+let noteCount = 1;
+function toggleDarkMode() {
+    document.body.classList.toggle("dark");
+}
+function renderTabs() {
+    const tabContainer = document.getElementById('noteTabs');
+    tabContainer.innerHTML = '';
+    notes.forEach(note => {
+        const btn = document.createElement('button');
+        btn.textContent = 'note ' + note.id;
+        btn.style.backgroundColor = note.id === currentNoteId ? '#6ad4f7' : '#4f46e5';
+        btn.style.color = note.id === currentNoteId ? 'black' : 'white';
+        btn.onclick = () => switchNote(note.id);
+        tabContainer.appendChild(btn);
+    });
+}
+function switchNote(id) {
+    saveCurrentNoteContent();
+    currentNoteId = id;
+    const note = notes.find(n => n.id === id);
+    document.getElementById('noteArea').innerHTML = note.content;
+    renderTabs();
+}
+function saveCurrentNoteContent() {
+    const note = notes.find(n => n.id === currentNoteId);
+    if(note) note.content = document.getElementById('noteArea').innerHTML;
+}
+function openNewNote() {
+    const container = document.getElementById("toastContainer");
+    const toast = document.createElement("div");
+    toast.classList.add("toast", "info");
+    toast.innerHTML = `Create a new note? <button id="yesBtn" style="margin-left:10px;">Yes</button><button id="noBtn" style="margin-left:5px;">No</button>`;
+    container.appendChild(toast);
+    setTimeout(() => toast.classList.add("show"), 100);
+    const removeToast = () => {
+        toast.classList.remove("show");
+        setTimeout(() => container.removeChild(toast), 500);
+    };
+    toast.querySelector("#yesBtn").onclick = () => {
+        removeToast();
+        saveCurrentNoteContent();
+        noteCount++;
+        const newNote = { id: noteCount, content: '', undoStack: [] };
+        notes.push(newNote);
+        currentNoteId = newNote.id;
+        document.getElementById('noteArea').innerHTML = '';
+        renderTabs();
+        showToast("New note created!", "success");
+    };
+    toast.querySelector("#noBtn").onclick = () => {
+        removeToast();
+        showToast("Action canceled", "warning");
+    };
+    setTimeout(() => removeToast(), 5000);
+}
+function deleteNote() {
+    if(notes.length === 1) { 
+        showToast("Cannot delete the last note.", "error");
+        return; 
+    }
+    const container = document.getElementById("toastContainer");
+    const toast = document.createElement("div");
+    toast.classList.add("toast", "warning");
+    toast.innerHTML = `Are you sure you want to delete this note? <button id="yesBtn" style="margin-left:10px;">Yes</button><button id="noBtn" style="margin-left:5px;">No</button>`;
+    container.appendChild(toast);
+    setTimeout(() => toast.classList.add("show"), 100);
+    const removeToast = () => {
+        toast.classList.remove("show");
+        setTimeout(() => container.removeChild(toast), 500);
+    };
+    toast.querySelector("#yesBtn").onclick = () => {
+        removeToast();
+        notes = notes.filter(n => n.id !== currentNoteId);
+        currentNoteId = notes[0].id;
+        document.getElementById('noteArea').innerHTML = notes[0].content;
+        renderTabs();
+        showToast("Note deleted", "error");
+    };
+    toast.querySelector("#noBtn").onclick = () => {
+        removeToast();
+        showToast("Action canceled", "info");
+    };
+    setTimeout(() => removeToast(), 5000);
+}
+function saveNote() {
+    saveCurrentNoteContent();
+    const note = notes.find(n => n.id === currentNoteId);
+    const container = document.getElementById("toastContainer");
+    const toast = document.createElement("div");
+    toast.classList.add("toast", "info");
+    toast.innerHTML = `Enter file name: <input type="text" id="noteFileName" placeholder="my_note" style="margin-left:5px;"/><button id="saveBtn" style="margin-left:5px;">Save</button><button id="cancelBtn" style="margin-left:5px;">Cancel</button>`;
+    container.appendChild(toast);
+    setTimeout(() => toast.classList.add("show"), 100);
+    const removeToast = () => {
+        toast.classList.remove("show");
+        setTimeout(() => container.removeChild(toast), 500);
+    };
+    toast.querySelector("#saveBtn").onclick = () => {
+        const nameInput = toast.querySelector("#noteFileName").value || "my_note";
+        const htmlContent = `<html><head><meta charset="UTF-8"></head><body>${note.content}</body></html>`;
+        const blob = new Blob([htmlContent], { type: "application/msword" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = nameInput + ".doc";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        removeToast();
+        showToast("Note saved as " + nameInput + ".doc", "success");
+    };
+    toast.querySelector("#cancelBtn").onclick = () => {
+        removeToast();
+        showToast("Action canceled", "info");
+    };
+    setTimeout(() => removeToast(), 10000);
+}
+function clearNote() {
+    const note = notes.find(n => n.id === currentNoteId);
+    if (!note) return;
+    const container = document.getElementById("toastContainer");
+    const toast = document.createElement("div");
+    toast.classList.add("toast", "warning");
+    toast.innerHTML = `Are you sure you want to clear the note?<button id="yesBtn" style="margin-left:5px;">Yes</button><button id="noBtn" style="margin-left:5px;">No</button>`;
+    container.appendChild(toast);
+    setTimeout(() => toast.classList.add("show"), 100);
+    const removeToast = () => {
+        toast.classList.remove("show");
+        setTimeout(() => container.removeChild(toast), 500);
+    };
+    toast.querySelector("#yesBtn").onclick = () => {
+        note.undoStack.push(document.getElementById('noteArea').innerHTML);
+        note.content = '';
+        document.getElementById('noteArea').innerHTML = '';
+        removeToast();
+        showToast("Note cleared", "warning");
+    };
+    toast.querySelector("#noBtn").onclick = () => {
+        removeToast();
+        showToast("Action canceled", "info");
+    };
+    setTimeout(() => removeToast(), 10000);
+}
+async function enhanceNote() {
+    const note = notes.find(n => n.id === currentNoteId);
+    if (!note) return;
+    note.content = document.getElementById("noteArea").innerHTML;
+    const cleanedContent = note.content.replace(/\s|&nbsp;/g, '');
+    if (!note.content.trim() || !cleanedContent) {
+        showToast("Note is empty!", "warning");
+        return;
+    }
+    const container = document.getElementById("toastContainer");
+    const toast = document.createElement("div");
+    toast.classList.add("toast", "info");
+    toast.innerHTML = `Enhance note using AI?<button id="yesBtn" style="margin-left:5px;">Yes</button><button id="noBtn" style="margin-left:5px;">No</button>`;
+    container.appendChild(toast);
+    setTimeout(() => toast.classList.add("show"), 100);
+    const removeToast = () => {
+        toast.classList.remove("show");
+        setTimeout(() => container.removeChild(toast), 500);
+    };
+    toast.querySelector("#yesBtn").onclick = async () => {
+        toast.innerHTML = `Enhancing note...<div id="progressBar" style="width: 100%; background-color: #ccc; border-radius: 5px; margin-top: 10px; height: 10px; overflow: hidden;"><div id="progress" style="width: 0%; height: 100%; background-color: #4caf50; transition: width 0.5s;"></div></div>`;
+        const progress = toast.querySelector("#progress");
+        let width = 0;
+        const interval = setInterval(() => {
+            if (width >= 90) return;
+            width += 10;
+            progress.style.width = width + "%";
+        }, 300);
+        try {
+            const response = await fetch("/enhance_note", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ note: note.content })
+            });
+            const data = await response.json();
+            clearInterval(interval);
+            progress.style.width = "100%";
+            note.undoStack.push(note.content);
+            note.content = data.enhanced_note;
+            document.getElementById("noteArea").innerHTML = note.content;
+            setTimeout(() => {
+                removeToast();
+                showToast("Note enhanced by AI!", "info");
+            }, 500);
+        } catch (err) {
+            clearInterval(interval);
+            console.error(err);
+            removeToast();
+            showToast("Failed to enhance note!", "error");
+        }
+    };
+    toast.querySelector("#noBtn").onclick = () => {
+        removeToast();
+        showToast("Action canceled", "info");
+    };
+    setTimeout(() => removeToast(), 10000);
+}
+function toggleFormat(cmd) {
+    document.execCommand(cmd, false, null);
+    updateToolbar();
+}
+function updateToolbar() {
+    const selection = document.getSelection();
+    if (!selection || !selection.anchorNode) return;
+    if (!document.getElementById("noteArea").contains(selection.anchorNode)) return;
+    document.getElementById("boldBtn").classList.toggle("active", document.queryCommandState("bold"));
+    document.getElementById("italicBtn").classList.toggle("active", document.queryCommandState("italic"));
+    document.getElementById("underlineBtn").classList.toggle("active", document.queryCommandState("underline"));
+}
+function showToast(message, type = "info") {
+    const container = document.getElementById("toastContainer");
+    const toast = document.createElement("div");
+    toast.classList.add("toast", type);
+    toast.textContent = message;
+    container.appendChild(toast);
+    setTimeout(() => toast.classList.add("show"), 100);
+    setTimeout(() => {
+        toast.classList.remove("show");
+        setTimeout(() => container.removeChild(toast), 500);
+    }, 3000);
+}
+const noteArea = document.getElementById("noteArea");
+noteArea.addEventListener("focus", updateToolbar);
+noteArea.addEventListener("keyup", updateToolbar);
+noteArea.addEventListener("mouseup", updateToolbar);
+document.addEventListener("selectionchange", updateToolbar);
+document.addEventListener('keydown', function(e) {
+    if(e.altKey && e.key.toLowerCase() === 's') { e.preventDefault(); saveNote(); }
+    if(e.altKey && e.key.toLowerCase() === 'n') { e.preventDefault(); openNewNote(); }
+    if(e.altKey && e.key.toLowerCase() === 'a') { e.preventDefault(); enhanceNote(); }
+    if(e.altKey && e.key.toLowerCase() === 'c') { e.preventDefault(); clearNote(); }
+    if(e.altKey && e.key.toLowerCase() === 'r') { e.preventDefault(); deleteNote(); }
+});
+noteArea.addEventListener("paste", function(e) {
+    e.preventDefault();
+    const text = (e.clipboardData || window.clipboardData).getData("text");
+    const selection = window.getSelection();
+    if (!selection.rangeCount) return;
+    selection.deleteFromDocument();
+    selection.getRangeAt(0).insertNode(document.createTextNode(text));
+    selection.collapseToEnd();
+});
+renderTabs();
+</script>
+</body>
+</html>
