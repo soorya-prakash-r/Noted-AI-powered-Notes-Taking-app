@@ -98,8 +98,6 @@ Noted/
 
 This project is licensed under the terms of the [LICENSE](./LICENSE) file included in this repository.
 
----
-
 ## 👤 Author
 
 **Soorya Prakash R**
