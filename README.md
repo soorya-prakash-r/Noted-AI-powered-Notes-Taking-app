@@ -13,7 +13,6 @@ To develop an AI-powered note-taking web application that allows users to create
 - 🎨 Rich text formatting — Bold, Italic, Underline
 - 🗑️ Delete or clear notes anytime
 - 📄 Download notes as `.docx` documents
-- ☁️ Cloud-hosted on **Microsoft Azure** for scalability and reliability
 
 ## 🛠️ Tech Stack
 
@@ -22,7 +21,6 @@ To develop an AI-powered note-taking web application that allows users to create
 | **Frontend** | HTML, CSS, Bootstrap, JavaScript |
 | **Backend** | Python (Flask) |
 | **AI Integration** | Gemini AI API |
-| **Deployment** | Microsoft Azure App Service |
 | **IDE** | Visual Studio Code |
 
 
@@ -33,7 +31,6 @@ The application is structured into four main layers:
 1. **Frontend (UI)** — Built with HTML, CSS & Bootstrap; provides an interface for writing and formatting notes.
 2. **Backend (Flask)** — Manages routes for creating, deleting, enhancing, and downloading notes.
 3. **AI Integration (Gemini API)** — Processes note content to improve grammar, clarity, and phrasing.
-4. **Deployment (Azure)** — Hosts the Flask application with scalability and high availability.
 
 ---
 
